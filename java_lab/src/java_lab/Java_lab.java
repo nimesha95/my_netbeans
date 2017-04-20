@@ -2,7 +2,6 @@ package java_lab;
 import java.util.Scanner;
 
 public class Java_lab {
-
     public static void main(String[] args) {
 		/*
 		1 2 3 4 5
@@ -11,6 +10,7 @@ public class Java_lab {
 		   4 8
 		    5
 		 */
+                /*
 		int count = 1;
 		for (int i=5; i>0; i--) {
 			for (int k=5; k>i; k--) {
@@ -22,6 +22,12 @@ public class Java_lab {
 			System.out.println("");
 			count++;
 		}
-	}
+*/
+    hello hi = new hello(5,6,7,8);
+    System.out.println(hi.four);
     
+    }
+    
+
+
 }
