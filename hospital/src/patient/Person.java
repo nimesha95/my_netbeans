@@ -1,5 +1,5 @@
 
-package test;
+package patient;
 
 /**
  *
@@ -10,10 +10,16 @@ public class Person {
     private int Phone;
     
     void setFname(String Fname){
-        this.Fname=Fname;
+        if (Fname.equals(""))
+            this.Fname="NULL";
+        else
+            this.Fname=Fname;
     }
     void setLname(String Lname){
-        this.Lname=Lname;
+        if (Lname.equals(""))
+            this.Lname="NULL";
+        else
+            this.Lname=Lname;
     }
     void setAddress(String Address){
         this.Address=Address;
@@ -22,7 +28,12 @@ public class Person {
         this.NIC=NIC;
     }
     void setPhone(int Phone){
+        try{
         this.Phone=Phone;
+        }
+        catch(NumberFormatException e){
+            this.Phone=0;
+        }
     }
     
 

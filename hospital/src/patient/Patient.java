@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test;
+package patient;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,7 +18,7 @@ public class Patient extends Person{
     private int Age,Emergency, consult_id;
     private String email, consult_name;
     Patient(String Fname,String Lname,String Address,String NIC,int Phone,
-            int Age,int Emergency,int consult_id,String email,String consult_name){
+        int Age,int Emergency,int consult_id,String email,String consult_name){
         setFname(Fname);
         setLname(Lname);
         setAddress(Address);
@@ -32,13 +32,30 @@ public class Patient extends Person{
     }
     
     void setAge(int Age){
+        try{
         this.Age=Age;
+        }
+        catch(NumberFormatException e){
+            this.Age=0;
+        }
     }
     void setEmergency(int Emergency ){
+        try{
         this.Emergency=Emergency;
+        }
+        catch(NumberFormatException e){
+            this.Emergency=0;
+        }
     }
     void setConst_id(int consult_id){
+        
+        try{
         this.consult_id=consult_id;
+        }
+        catch(NumberFormatException e){
+            this.consult_id=0;
+        }
+        
     }
     void setEmail(String email){
         this.email=email;
@@ -64,6 +81,7 @@ public class Patient extends Person{
         return consult_name;
     }
     
+    
     void pushToDB() throws ClassNotFoundException, SQLException{
         //java_db_h2.Connection();
         Class.forName("org.h2.Driver");
@@ -72,7 +90,7 @@ public class Patient extends Person{
         
         st.execute("INSERT INTO patients(FNAME,LNAME,NIC,PHONE,ADDRESS,EMAIL,"
                 + "EMERGENCY_C,CONTS_ID,CONST_NAME) values ("
-                +"\'"+getFname()+"\'"+",\'"+getLname()+"\'"+",\'"+getNIC()+"\'"+","+getPhone()+",\'"+getAddress()+"\'"+",\'"+getEmail()+"\'"+","
+                +"\'"+getFname()+"\'"+getFname()+"\'"+",\'"+getLname()+"\'"+",\'"+getNIC()+"\'"+","+getPhone()+",\'"+getAddress()+"\'"+",\'"+getEmail()+"\'"+","
                 +getEmergency()+","+getConsult_id()+",\'"+getConsult_name()+"\'"+")");
         System.out.println("Database updated");
         /*
