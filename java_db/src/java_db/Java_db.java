@@ -11,6 +11,7 @@ public class Java_db {
     public static void main(String[] args) throws Exception {
         createTable();
         post();
+        post();
         get();
     }
     
@@ -75,3 +76,4 @@ public class Java_db {
         return null;
     }
 }
+

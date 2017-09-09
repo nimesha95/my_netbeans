@@ -1,14 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package patient;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,46 +14,47 @@ import java.sql.Statement;
  */
 public class Patient extends Person{
     private int Age,Emergency, consult_id;
-    private String email, consult_name;
+    private String email,guard_name, consult_name,dob,sex;
+    
+    Patient(){} //default constructor
+    
     Patient(String Fname,String Lname,String Address,String NIC,int Phone,
-        int Age,int Emergency,int consult_id,String email,String consult_name){
+        int Age,String guard_name,int Emergency,int consult_id,String email,
+        String consult_name,String dob,String sex){
         setFname(Fname);
         setLname(Lname);
         setAddress(Address);
         setNIC(NIC);
         setPhone(Phone);
         setAge(Age);
+        SetDOB(dob);
+        SetGuard(guard_name);
         setEmergency(Emergency);
         setConst_id(consult_id);
         setEmail(email);
         setConst_name(consult_name);
+        setSex(sex);
+    }
+    
+    //getters
+    void setSex(String sex){
+        this.sex=sex;
     }
     
     void setAge(int Age){
-        try{
         this.Age=Age;
-        }
-        catch(NumberFormatException e){
-            this.Age=0;
-        }
     }
+    void SetDOB(String dob){
+        this.dob=dob;
+    }
+    void SetGuard(String name ){
+        this.guard_name=name;
+    }   
     void setEmergency(int Emergency ){
-        try{
         this.Emergency=Emergency;
-        }
-        catch(NumberFormatException e){
-            this.Emergency=0;
-        }
     }
     void setConst_id(int consult_id){
-        
-        try{
         this.consult_id=consult_id;
-        }
-        catch(NumberFormatException e){
-            this.consult_id=0;
-        }
-        
     }
     void setEmail(String email){
         this.email=email;
@@ -64,9 +63,18 @@ public class Patient extends Person{
         this.consult_name=consult_name;
     }
     
-    
+ //setters   
     int getAge(){
         return Age;
+    }
+    String getSex(){
+        return sex;
+    }
+    String getDOB(){
+        return dob;
+    }    
+    String getGuard(){
+        return guard_name;
     }
     int getEmergency(){
         return Emergency;
@@ -82,22 +90,39 @@ public class Patient extends Person{
     }
     
     
-    void pushToDB() throws ClassNotFoundException, SQLException{
-        //java_db_h2.Connection();
-        Class.forName("org.h2.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:h2:C:\\Users\\amarasena\\Documents\\NetBeansProjects\\hospital\\db/patient","test","test");
-        Statement st = conn.createStatement();
+    void pushToDB() throws ClassNotFoundException, SQLException, Exception{ //this method push the patient object to the database
         
-        st.execute("INSERT INTO patients(FNAME,LNAME,NIC,PHONE,ADDRESS,EMAIL,"
-                + "EMERGENCY_C,CONTS_ID,CONST_NAME) values ("
-                +"\'"+getFname()+"\'"+getFname()+"\'"+",\'"+getLname()+"\'"+",\'"+getNIC()+"\'"+","+getPhone()+",\'"+getAddress()+"\'"+",\'"+getEmail()+"\'"+","
-                +getEmergency()+","+getConsult_id()+",\'"+getConsult_name()+"\'"+")");
-        System.out.println("Database updated");
-        /*
-        System.out.println("INSERT INTO patients(FNAME,LNAME,NIC,PHONE,ADDRESS,EMAIL,"
-                + "EMERGENCY_C,CONTS_ID,CONST_NAME) values ("
+        String sql="INSERT INTO patients(FNAME,LNAME,NIC,PHONE,ADDRESS,EMAIL,"
+                + "EMERGENCY_C,CONTS_ID,CONST_NAME,guard_name,dob,age,sex) values ("
                 +"\'"+getFname()+"\'"+",\'"+getLname()+"\'"+",\'"+getNIC()+"\'"+","+getPhone()+",\'"+getAddress()+"\'"+",\'"+getEmail()+"\'"+","
-                +getEmergency()+","+getConsult_id()+",\'"+getConsult_name()+"\'"+")");
-    */
+                +getEmergency()+","+getConsult_id()+",\'"+getConsult_name()+"\','"+getGuard()+"','"+getDOB()+"',"+getAge()+",'"+getSex()+"')";
+        DBcon.post(sql);
+        System.out.println("Database updated");       
+}
+
+    void GetFromDB(int pid) throws Exception{   //this populates a patient object by getting data from database
+        try {
+            String sql = "SELECT * FROM PATIENTS WHERE ID="+pid;
+            ResultSet rs = DBcon.get(sql);
+                while(rs.next()){
+                    setFname(rs.getString("FNAME"));
+                    setLname(rs.getString("LNAME"));
+                    setNIC(rs.getString("NIC"));
+                    setPhone(rs.getInt("PHONE"));
+                    setAddress(rs.getString("ADDRESS"));
+                    setEmail(rs.getString("EMAIL"));
+                    setEmergency(rs.getInt("EMERGENCY_C"));
+                    setConst_id(rs.getInt("CONTS_ID"));
+                    setConst_name(rs.getString("CONST_NAME"));
+                    SetGuard(rs.getString("GUARD_NAME"));
+                    SetDOB(rs.getString("DOB"));
+                    setAge(rs.getInt("AGE"));
+                }
+                rs.close();
+            System.out.println("Done");
+        }
+        catch (SQLException | ClassNotFoundException ex) {  
+            Logger.getLogger(DBcon.class.getName()).log(Level.SEVERE, null, ex);   
+            }
 }
 }

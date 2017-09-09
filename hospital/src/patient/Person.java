@@ -5,20 +5,18 @@ package patient;
  *
  * @author Nimesha
  */
-public class Person {
+public class Person {   
+    /*
+    Parent class of the doctor and patient clases
+    Contains the basic characteristics of a person object
+    */
     private String Fname,Lname,Address,NIC;
     private int Phone;
     
     void setFname(String Fname){
-        if (Fname.equals(""))
-            this.Fname="NULL";
-        else
             this.Fname=Fname;
     }
     void setLname(String Lname){
-        if (Lname.equals(""))
-            this.Lname="NULL";
-        else
             this.Lname=Lname;
     }
     void setAddress(String Address){
@@ -28,12 +26,8 @@ public class Person {
         this.NIC=NIC;
     }
     void setPhone(int Phone){
-        try{
         this.Phone=Phone;
-        }
-        catch(NumberFormatException e){
-            this.Phone=0;
-        }
+        
     }
     
 

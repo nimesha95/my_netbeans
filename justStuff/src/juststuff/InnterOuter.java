@@ -3,12 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package patient;
+package juststuff;
 
 /**
  *
  * @author Nimesha
  */
-public class employee {
-    
+public class InnterOuter {
+    public static void main(String args[]){
+       System.out.println(meth(5,0)); 
+}
+
+public static int meth(int x,int y){
+    return x/y;
+}
 }
